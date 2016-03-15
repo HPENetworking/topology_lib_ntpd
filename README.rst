@@ -9,7 +9,7 @@ implement `ntpd` in a linux workstation.
 Documentation
 =============
 
-    https://github.com/HPENetworking/topology_lib_ntpd.git/tree/master/doc
+    https://github.com/HPENetworking/topology_lib_ntpd/tree/master/doc
 
 
 License
