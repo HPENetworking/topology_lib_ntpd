@@ -202,8 +202,24 @@ def ntpd_start(enode):
     assert 'done' in ntpd_start_re
 
 
+def check_ntpd_process(enode):
+    """
+    Check that NTP daemon is running with correct file.
+
+    :param enode: Engine node to communicate with.
+    :type enode: topology.platforms.base.BaseNode
+    :return: True or False if ntpd is running with defined file
+
+    """
+    cmd = 'ps aux | grep ntpd'
+    ntpd_check_re = enode(cmd, shell='bash')
+
+    return CONFIG_FILE in ntpd_check_re
+
+
 __all__ = [
     'ntpd_stop', 'add_ntp_server', 'remove_ntp_server', 'add_trustedkey',
     'remove_trustedkey', 'add_trustedkey_password',
-    'remove_trustedkey_password', 'ntpd_config_files', 'ntpd_start'
+    'remove_trustedkey_password', 'ntpd_config_files', 'ntpd_start',
+    'check_ntpd_process'
 ]
