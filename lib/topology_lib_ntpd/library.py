@@ -162,7 +162,7 @@ def remove_trustedkey_password(enode, trustedkey_id):
     enode(cmd, shell='bash')
 
 
-def ntpd_config_files(enode, keyfile=False):
+def ntpd_config_files(enode, keyfile=False, trustedkey_id=None):
     """
     Configure the NTP daemon program in order to use '/etc/ntp.conf' as the
     configuration file, and define the keyfile path as '/etc/ntp.keys'
@@ -172,13 +172,17 @@ def ntpd_config_files(enode, keyfile=False):
     :type enode: topology.platforms.base.BaseNode
     :param bool keyfile: Flag that defines if the NTP daemon should read the
      key file or not
+    :param int trustedkey_id: NTP Key number
 
     """
 
     cmd = 'ntpd -c {config_file}'.format(config_file=CONFIG_FILE)
 
     if keyfile:
-        cmd = cmd + ' -k {keys_file}'.format(keys_file=KEYS_FILE)
+        assert trustedkey_id is not None
+        cmd = cmd + ' -k {keys_file} -t {trustedkey_id}'.format(
+            keys_file=KEYS_FILE, trustedkey_id=trustedkey_id
+        )
 
     enode(cmd, shell='bash')
 
@@ -207,7 +211,6 @@ def check_ntpd_process(enode):
     :return: True or False if ntpd is running with defined file
 
     """
-
     cmd = 'ps aux | grep ntpd'
     ntpd_check_re = enode(cmd, shell='bash')
 
